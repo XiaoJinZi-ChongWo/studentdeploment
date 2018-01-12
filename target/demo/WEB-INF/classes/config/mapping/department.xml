@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ssm.mapper.ManagerMapper">
+    <!--查询所有的用户信息-->
+    <resultMap type="com.cn.ssm.model.Department" id="Department">
+        <id property="depart_Id" column="depart_Id"/>
+        <result property="depart_Name" column="depart_Name"/>
+    </resultMap>
+
+     <!-- 查询数据库中的所有专业信息，并以map的形式返回出去 -->
+    <select id="selectDepartment" resultMap="Department">
+        SELECT * FROM DEPARTMENT
+    </select>
+    <!-- 向数据库中插入一行专业数据 -->
+    <insert id="insertDepartment" parameterType="com.cn.ssm.model.Department">
+        INSERT INTO department(depart_Name) VALUES (#{depart_Name})
+    </insert>
+
+    <!--删除选中的专业信息-->
+    <delete id="deleteDepartment" parameterType="int">
+        DELETE FROM DEPARTMENT WHERE depart_id = #{id}
+    </delete>
+
+</mapper>

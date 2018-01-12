@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ssm.mapper.ManagerMapper">
+    <!-- 插入学生的信息 -->
+    <insert id="insertStudents" parameterType="com.cn.ssm.model.Student">
+        INSERT INTO STUDENTS(students_Id,students_Name,students_Password,students_Sex,students_Math,students_English,classes_Id) VALUES
+         (#{students_Id},#{students_Name},#{students_Password},#{students_Sex},#{students_Math},#{students_English},#{classes.classes_Id})
+    </insert>
+    <!-- 对于前台传值的时候并没有传入depart_id字段，则需要通过表格之间的关联字段对表格进行关联更新 -->
+    <update id="updateDepartid">
+        update students set students.depart_id = (select depart_id from classes where students.classes_id=classes.classes_id)
+    </update>
+    <!-- 查询说的学生信息 -->
+    <resultMap type="com.cn.ssm.model.Student" id="students">
+        <id property="students_Id" column="students_Id"/>
+        <result property="students_Name" column="students_Name"/>
+        <result property="students_Password" column="students_Password"/>
+        <result property="students_Sex" column="students_Sex"/>
+        <result property="students_Math" column="students_Math"/>
+        <result property="students_English" column="students_English"/>
+        <result property="classes.classes_Id" column="classes_Id"/>
+    </resultMap>
+    <!-- 查询出所有学生的信息 -->
+    <select id="selectStudents" resultMap="students">
+        SELECT * FROM STUDENTS
+    </select>
+    <!-- 根据相应的学生id找到该学生的信息 -->
+    <select id="selectStudent" parameterType="String" resultMap="students">
+        SELECT * FROM STUDENTS WHERE STUDENTS_ID = #{id}
+    </select>
+    <!-- 通过班级id查询班级成绩信息 -->
+    <select id="selectGrade" parameterType="String" resultMap="students">
+            SELECT * FROM STUDENTS WHERE CLASSES_ID = #{id}
+    </select>
+    <!-- 通过学生的ID主键对学生的信息进行更新 -->
+    <update id="updateStudent" parameterType="com.cn.ssm.model.Student">
+        UPDATE STUDENTS SET students_Name=#{students_Name},students_Password=#{students_Password},students_Sex=#{students_Sex},students_Math=#{students_Math},
+        students_English=#{students_English},depart_Id=#{classes.department.depart_Id},classes_Id=#{classes.classes_Id} WHERE students_Id=#{students_Id}
+    </update>
+</mapper>

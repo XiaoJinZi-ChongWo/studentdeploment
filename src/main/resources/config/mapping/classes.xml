@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ssm.mapper.ManagerMapper">
+    <resultMap type="com.cn.ssm.model.Classes" id="Classes">
+        <id property="classes_Id" column="classes_id"/>
+        <result property="classes_Describe" column="class_describe"/>
+        <result property="classes_Year" column="class_year"/>
+    </resultMap>
+
+    <!-- 向数据库中插入一个关于班级的信息 -->
+    <insert id="insertClasses" parameterType="com.cn.ssm.model.Classes">
+        INSERT INTO classes(classes_Id,classes_Year,classes_Describe,depart_Id)VALUES (#{classes_Id},#{classes_Year},#{classes_Describe},#{department.depart_Id})
+    </insert>
+
+    <!-- 浏览所有的班级信息 -->
+    <select id="selectClasses" resultMap="Classes">
+        SELECT * FROM CLASSES
+    </select>
+</mapper>
